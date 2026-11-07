@@ -75,13 +75,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
     setState(() => _loading = false);
 
-    await showDialog<void>(
+    final goToTickets = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (_) => _SuccessDialog(reg: reg, event: event),
     );
-    // Dialog "Close" returns here; go back to the event page.
-    if (mounted) Navigator.pop(context);
+    if (!mounted) return;
+    if (goToTickets == true) {
+      Navigator.pushNamedAndRemoveUntil(context, Routes.home, (r) => false,
+          arguments: 3);
+    } else {
+      Navigator.pop(context); // Close: back to the event page
+    }
   }
 
   @override
@@ -353,11 +358,7 @@ class _SuccessDialog extends StatelessWidget {
               AppButton(
                 label: 'View my tickets',
                 expand: true,
-                onPressed: () {
-                  final nav = Navigator.of(context, rootNavigator: true);
-                  nav.pop(); // close the dialog first
-                  nav.pushNamedAndRemoveUntil(Routes.home, (r) => false, arguments: 3);
-                },
+                onPressed: () => Navigator.pop(context, true),
               ),
               const SizedBox(height: 6),
               TextButton(
