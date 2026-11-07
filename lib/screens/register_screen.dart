@@ -6,7 +6,6 @@ import '../models/event.dart';
 import '../models/registration.dart';
 import '../providers/auth_provider.dart';
 import '../providers/events_provider.dart';
-import '../routes.dart';
 import '../theme/app_theme.dart';
 import '../utils/format.dart';
 import '../utils/validators.dart';
@@ -75,18 +74,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
     setState(() => _loading = false);
 
-    final goToTickets = await showDialog<bool>(
+    await showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (_) => _SuccessDialog(reg: reg, event: event),
     );
-    if (!mounted) return;
-    if (goToTickets == true) {
-      Navigator.pushNamedAndRemoveUntil(context, Routes.home, (r) => false,
-          arguments: 3);
-    } else {
-      Navigator.pop(context); // Close: back to the event page
-    }
+    // Dialog "Close" returns here; go back to the event page.
+    if (mounted) Navigator.pop(context);
   }
 
   @override
@@ -356,15 +350,9 @@ class _SuccessDialog extends StatelessWidget {
               ),
               const SizedBox(height: 22),
               AppButton(
-                label: 'View my tickets',
+                label: 'Done',
                 expand: true,
-                onPressed: () => Navigator.pop(context, true),
-              ),
-              const SizedBox(height: 6),
-              TextButton(
                 onPressed: () => Navigator.pop(context),
-                style: TextButton.styleFrom(foregroundColor: p.muted),
-                child: const Text('Close'),
               ),
             ],
           ),
