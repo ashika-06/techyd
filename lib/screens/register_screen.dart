@@ -353,9 +353,11 @@ class _SuccessDialog extends StatelessWidget {
               AppButton(
                 label: 'View my tickets',
                 expand: true,
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                    context, Routes.home, (r) => false,
-                    arguments: 3),
+                onPressed: () {
+                  final nav = Navigator.of(context, rootNavigator: true);
+                  nav.pop(); // close the dialog first
+                  nav.pushNamedAndRemoveUntil(Routes.home, (r) => false, arguments: 3);
+                },
               ),
               const SizedBox(height: 6),
               TextButton(

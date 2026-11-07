@@ -57,7 +57,7 @@ class Routes {
         final curved =
             CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
         return FadeTransition(
-          opacity: curved,
+          opacity: true,
           child: SlideTransition(
             position: Tween<Offset>(
               begin: const Offset(0, 0.04),
